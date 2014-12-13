@@ -14,7 +14,7 @@ typedef struct utilizador
 {
 	char login[50];
 	char password[50];
-	mensagem 
+	mensagem msg;
 	lis_util next; 
 }utilizador;
 
