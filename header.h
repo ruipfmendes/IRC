@@ -26,3 +26,6 @@ typedef struct mensagem
 	char *corpo_msg
 	
 }mensagem;
+
+void erro(char *msg);
+void process_server(int servidor_fp);
