@@ -8,6 +8,7 @@
 #include <string.h>
 #define SERVER_PORT 9000
 #define BUF_SIZE 1024
+#define LOGIN "login.txt"
 
 typedef struct *lis_util;
 typedef struct utilizador
@@ -29,3 +30,4 @@ typedef struct mensagem
 
 void erro(char *msg);
 void process_server(int servidor_fp);
+void process_client(int cliente_fp);

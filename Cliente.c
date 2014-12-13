@@ -2,7 +2,7 @@
 
 
 void erro(char *msg);
-void process_server(int servidor_fp);
+void process_servidor(int servidor_fp);
 
 int main  (int argc, char *argv[]) {
     char endServer[100];
@@ -15,24 +15,27 @@ int main  (int argc, char *argv[]) {
         exit(-1);
     }
     strcpy(endServer, argv[1]);
-    if ((hostPtr = gethostbyname(endServer)) == 0)
+    if ((hostPtr = gethostbyname(endServer)) == 0){
         erro("Nao consegui obter endereço");
+	}
     bzero((void *) &addr, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = ((struct in_addr *)(hostPtr->h_addr))->s_addr;
     addr.sin_port = htons((short) atoi(argv[2]));
-    if((fd = socket(AF_INET,SOCK_STREAM,0)) == -1)
+    if((fd = socket(AF_INET,SOCK_STREAM,0)) == -1){
         erro("socket");
-    if( connect(fd,(struct sockaddr *)&addr,sizeof (addr)) < 0)
-	erro("Connect");
-    write(fd, argv[3], 1 + strlen(argv[3]));
-    process_server(fd);
-    p
+	}
+    if( connect(fd,(struct sockaddr *)&addr,sizeof (addr)) < 0){
+		erro("Connect");
+	}
+	
+    //write(fd, argv[3], 1 + strlen(argv[3]));
+    process_servidor(fd);
 	close(fd);
 	exit(0);
 }
 
-void process_server(int server_fd)
+void process_servidor(int server_fd)
 {
 
 	int nread = 0;
@@ -50,7 +53,7 @@ void erro(char *msg)
     exit(-1);
 }
 
-void menu(){
+/*void menu(){
     char escolha[2];
 
     printf("-----Correio electronico-----\n");
@@ -64,10 +67,9 @@ void menu(){
     getchar();
 
 
-    /*switch(escolha[0]){
+    switch(escolha[0]){
     	case('1'):
 
     	case('2'):
-    }*/
-}
-
+    }
+}*/
