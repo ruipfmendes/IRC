@@ -27,13 +27,14 @@ int main  (int argc, char *argv[]) {
 	erro("Connect");
     write(fd, argv[3], 1 + strlen(argv[3]));
     process_server(fd);
+    p
 	close(fd);
 	exit(0);
 }
 
 void process_server(int server_fd)
 {
-	
+
 	int nread = 0;
 	char buffer[BUF_SIZE];
 	nread = read(server_fd,buffer,BUF_SIZE-1);
@@ -47,5 +48,26 @@ void erro(char *msg)
 {
     printf("Erro: %s\n", msg);
     exit(-1);
+}
+
+void menu(){
+    char escolha[2];
+
+    printf("-----Correio electronico-----\n");
+    printf("1-Enviar mensagem\n");
+    printf("2-Listar todas as mensagens de um utilizador\n");
+    printf("3-Ler uma mensagem recebida \n");
+    printf("4-Apagar mensagem do servidor\n");
+    printf("Opção: ");
+    fflush(stdin);
+    fgets(escolha, 3, stdin);
+    getchar();
+
+
+    /*switch(escolha[0]){
+    	case('1'):
+
+    	case('2'):
+    }*/
 }
 
