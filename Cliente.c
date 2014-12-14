@@ -28,6 +28,7 @@ int main  (int argc, char *argv[]) {
     if( connect(fd,(struct sockaddr *)&addr,sizeof (addr)) < 0){
 		erro("Connect");
 	}
+	login(fd);
 	
     //write(fd, argv[3], 1 + strlen(argv[3]));
     process_servidor(fd);
@@ -35,9 +36,23 @@ int main  (int argc, char *argv[]) {
 	exit(0);
 }
 
+void login(fd){
+	char utilizador[INFO_SIZE];
+	char password[INFO_SIZE];
+	
+	printf("Utilizador: ");
+	fgets(utilizador,sizeof(utilizador),stdin);
+	utilizador[strlen(utilizador)-1] = 0; // remover \n
+	write(fd,utilizador,strlen(utilizador)+1);
+	printf("Password :");
+	strcpy(password,getpass("Password: "));
+	//fgets(password,sizeof(password),stdin);
+	password[strlen(password)-1] = 0; // remover \n
+	write(fd,password,strlen(password)+1);
+}
+
 void process_servidor(int server_fd)
 {
-
 	int nread = 0;
 	char buffer[BUF_SIZE];
 	nread = read(server_fd,buffer,BUF_SIZE-1);

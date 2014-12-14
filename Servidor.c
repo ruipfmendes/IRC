@@ -21,14 +21,68 @@ int main() {
         if (client > 0) {
             if (fork() == 0) {
                 close(fd);
-                process_client(client);
-                exit(0);
+				login_server(client);
+                //process_client(client);
             }
             close(client);
         }
     }
     return 0;
 }	
+
+void login_servidor(int fd){
+    printf("Login\n");
+    char utilizador[INFO_SIZE];
+    char password[INFO_SIZE];
+	char utilizador_notfound[MSG_SIZE] = "Utilizador não existe";
+	int nread;
+	
+	nread = read(fd, username, INFO_SIZE+1);
+	username[nread-1]='\0';
+    nread = read(fd, password, INFO_SIZE+1);
+    password[nread-1]='\0';
+    if(comparar_login(username,password)==1){
+        process_client(fd);
+    }
+    else{
+		write(fd,utilizador_notfound,strlen(utilizador_notfound)+1);
+    }
+}
+void ler_infos_utilizador(){
+	char buffer[INFOLINE_SIZE];
+    char utilizador[INFO_SIZE];
+    char password[INFO_SIZE];
+
+    int i = 0;
+    FILE* fp;
+    if((fp=fopen("login.txt","r")))
+    {
+        while(fgets(buffer,INFOLINE_SIZE, fp))
+        {
+            sscanf(buffer,"%s %s",utilizador,password);
+            strcpy(infos_ut[i].user,utilizador);
+            strcpy(infos_ut[i].password,password);
+            printf("Utilizador %d -> %s -> %s\n", i, infos_ut[i].utilizador,infos_ut[i].password);
+            i++;
+            infos_ut_size++;
+        }
+    }
+    fclose(fp);
+}
+void comparar_login(){
+    printf("Utilizador: %s; Password: %s", utilizador,password);
+    int i =0;
+	for(i = 0;i<infos_ut_size;i++){
+        if(strcmp(utilizador,infos_ut[i].utilizador)==0 && strcmp(password,infos_ut[i].password)==0){
+            return 1;
+		}
+		else if(strcmp(user,credenciais[i].utilizador)==0){
+			printf("Password errada");
+			return 0;
+		}
+	}
+    return 0;
+}
 void process_client(int client_fd)
 {
 	int nread = 0;
