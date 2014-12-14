@@ -13,25 +13,32 @@
 #define MSG_SIZE 50
 #define LOGIN "login.txt"
 
-typedef struct info_utilizador
-{
-	char login[50];
+typedef struct info_utilizador{
+	char utilizador[50];
 	char password[50];
 //	mensagem msg[100];
 //	lis_util next; 
 }info_utilizador;
 
-typedef struct mensagem
+/*typedef struct mensagem
 {
 	char *destinatario;
 	char *assunto;
-	char *corpo_msg
-	
-}mensagem;
+	char *corpo_msg;
+}mensagem;*/
 
+//Cliente.c
 void erro(char *msg);
-void process_server(int servidor_fp);
-void process_client(int cliente_fp);
+void process_servidor(int servidor_fp);
+void login(int fd);
+//Servidor.c
+void erro(char *msg);
+void login_servidor(int fd);
+void ler_infos_utilizador();
+int comparar_login(char utilizador[], char password[]);
+void process_cliente(int client_fd);
+
+
 
 info_utilizador infos_ut[100];
-int infos_ut_size = 0
+int infos_ut_size = 0;

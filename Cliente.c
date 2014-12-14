@@ -1,16 +1,17 @@
 #include "header.h"
 
+void erro(char *msg){
+	printf("Erro: %s\n",msg);
+	exit(-1);
+}
 
-void erro(char *msg);
-void process_servidor(int servidor_fp);
-
-int main  (int argc, char *argv[]) {
+int main(int argc, char const *argv[]){
     char endServer[100];
     int fd;
     struct hostent *hostPtr;
 	struct sockaddr_in addr, serv_addr;
 	char sucesso_login[30];
-	char comando[30];
+	char comando[30] = "";
 
     if(argc != 3) {
         printf("cliente <host> <port>\n");
@@ -35,21 +36,21 @@ int main  (int argc, char *argv[]) {
 	int nread;
 	nread = read(fd,sucesso_login,sizeof(sucesso_login)+1);
 	sucesso_login[nread-1]=0;
-	if(strcmp(sucesso_login,"1") == 0){
-		printf("Iniciou a sua sessao com sucesso");
-		printf("Menu de comandos:");
+	if(strcmp(sucesso_login,"sucesso") == 0){
+		printf("Iniciou a sua sessao com sucesso\n");
+		printf("Menu de comandos:\n");
 		//printf("ligar");
-		printf("enviar - Enviar uma mensagem");
-		printf("lista - Lista as mensagens do utilizador");
-		printf("ler - Ler uma mensagem recebida");
-		printf("apagar - Apagar uma mensagem do servidor");
-		printf("desligar");
+		printf("enviar - Enviar uma mensagem\n");
+		printf("lista - Lista as mensagens do utilizador\n");
+		printf("ler - Ler uma mensagem recebida\n");
+		printf("apagar - Apagar uma mensagem do servidor\n");
+		printf("desligar\n");
 	}
-	while(strcmp(comando,"desligar\n")!=0)){
+	while(strcmp(comando,"desligar\n")!=0){
 		fgets(comando,sizeof(comando),stdin);
 		write(fd,comando,strlen(comando)+1);
 		if(strcmp(comando,"enviar\n")==0){
-			enviar_email(fd);
+			//enviar_email(fd);
 		}
 		else if(strcmp(comando,"lista\n")==0){
 			//listar_mensagem(fd);
@@ -62,7 +63,7 @@ int main  (int argc, char *argv[]) {
 	exit(0);
 }
 
-void login(fd){
+void login(int fd){
 	char utilizador[INFO_SIZE];
 	char password[INFO_SIZE];
 	
@@ -70,9 +71,9 @@ void login(fd){
 	fgets(utilizador,sizeof(utilizador),stdin);
 	utilizador[strlen(utilizador)-1] = 0; // remover \n
 	write(fd,utilizador,strlen(utilizador)+1);
-	printf("Password :");
-	strcpy(password,getpass("Password: "));
-	//fgets(password,sizeof(password),stdin);
+	printf("Password: ");
+	//strcpy(password,getpass("Password: "));
+	fgets(password,sizeof(password),stdin);
 	password[strlen(password)-1] = 0; // remover \n
 	write(fd,password,strlen(password)+1);
 }
@@ -86,10 +87,4 @@ void process_servidor(int server_fd)
 	printf("%s\n",buffer);
 	fflush(stdout);
 	close(server_fd);
-}
-
-void erro(char *msg)
-{
-    printf("Erro: %s\n", msg);
-    exit(-1);
 }
