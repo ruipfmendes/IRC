@@ -15,13 +15,14 @@ int main() {
         erro("na funcao bind");
     if(listen(fd, 5) < 0)
         erro("na funcao listen");
+	ler_infos_utilizador();
     while (1) {
         client_addr_size = sizeof(client_addr);
         client = accept(fd,(struct sockaddr *)&client_addr,&client_addr_size);
         if (client > 0) {
             if (fork() == 0) {
                 close(fd);
-				login_server(client);
+				login_servidor(client);
                 //process_client(client);
             }
             close(client);

@@ -12,12 +12,12 @@ int main  (int argc, char *argv[]) {
 	char sucesso_login[30];
 	char comando[30];
 
-    if (argc != 4) {
-        printf("cliente <host> <port> <string>\n");
+    if(argc != 3) {
+        printf("cliente <host> <port>\n");
         exit(-1);
     }
     strcpy(endServer, argv[1]);
-    if ((hostPtr = gethostbyname(endServer)) == 0){
+    if((hostPtr = gethostbyname(endServer)) == 0){
         erro("Nao consegui obter endereço");
 	}
     bzero((void *) &addr, sizeof(addr));
@@ -27,7 +27,7 @@ int main  (int argc, char *argv[]) {
     if((fd = socket(AF_INET,SOCK_STREAM,0)) == -1){
         erro("socket");
 	}
-    if( connect(fd,(struct sockaddr *)&addr,sizeof (addr)) < 0){
+    if(connect(fd,(struct sockaddr *)&addr,sizeof (addr)) < 0){
 		erro("Connect");
 	}
 	
@@ -36,11 +36,13 @@ int main  (int argc, char *argv[]) {
 	nread = read(fd,sucesso_login,sizeof(sucesso_login)+1);
 	sucesso_login[nread-1]=0;
 	if(strcmp(sucesso_login,"1") == 0){
+		printf("Iniciou a sua sessao com sucesso");
 		printf("Menu de comandos:");
-		printf("ligar");
-		printf("enviar");
-		printf("lista");
-		printf("ler");
+		//printf("ligar");
+		printf("enviar - Enviar uma mensagem");
+		printf("lista - Lista as mensagens do utilizador");
+		printf("ler - Ler uma mensagem recebida");
+		printf("apagar - Apagar uma mensagem do servidor");
 		printf("desligar");
 	}
 	while(strcmp(comando,"desligar\n")!=0)){
@@ -91,24 +93,3 @@ void erro(char *msg)
     printf("Erro: %s\n", msg);
     exit(-1);
 }
-
-/*void menu(){
-    char escolha[2];
-
-    printf("-----Correio electronico-----\n");
-    printf("1-Enviar mensagem\n");
-    printf("2-Listar todas as mensagens de um utilizador\n");
-    printf("3-Ler uma mensagem recebida \n");
-    printf("4-Apagar mensagem do servidor\n");
-    printf("Opção: ");
-    fflush(stdin);
-    fgets(escolha, 3, stdin);
-    getchar();
-
-
-    switch(escolha[0]){
-    	case('1'):
-
-    	case('2'):
-    }
-}*/
