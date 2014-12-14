@@ -9,6 +9,8 @@ int main  (int argc, char *argv[]) {
     int fd;
     struct hostent *hostPtr;
 	struct sockaddr_in addr, serv_addr;
+	char sucesso_login[30];
+	char comando[30];
 
     if (argc != 4) {
         printf("cliente <host> <port> <string>\n");
@@ -28,10 +30,32 @@ int main  (int argc, char *argv[]) {
     if( connect(fd,(struct sockaddr *)&addr,sizeof (addr)) < 0){
 		erro("Connect");
 	}
+	
 	login(fd);
+	int nread;
+	nread = read(fd,sucesso_login,sizeof(sucesso_login)+1);
+	sucesso_login[nread-1]=0;
+	if(strcmp(sucesso_login,"1") == 0){
+		printf("Menu de comandos:");
+		printf("ligar");
+		printf("enviar");
+		printf("lista");
+		printf("ler");
+		printf("desligar");
+	}
+	while(strcmp(comando,"desligar\n")!=0)){
+		fgets(comando,sizeof(comando),stdin);
+		write(fd,comando,strlen(comando)+1);
+		if(strcmp(comando,"enviar\n")==0){
+			enviar_email(fd);
+		}
+		else if(strcmp(comando,"lista\n")==0){
+			//listar_mensagem(fd);
+		}
+	}
 	
     //write(fd, argv[3], 1 + strlen(argv[3]));
-    process_servidor(fd);
+    //process_servidor(fd);
 	close(fd);
 	exit(0);
 }
